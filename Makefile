@@ -1,8 +1,8 @@
 
-CFLAGS += -std=c99 -Wall -Wextra -Wpedantic
+CFLAGS += -std=c99 -Wall -Wextra -Wpedantic -g
 
-ifneq ($(ENABLE_LIBASAN),)
-  CFLAGS += -fsanitize=address -fsanitize=undefined -fstack-usage
+ifeq ($(DISABLE_LIBASAN),)
+  CFLAGS += -fsanitize=address -fsanitize=undefined -fstack-usage -static-libasan
 endif
 
 .PHONY: all
