@@ -1,5 +1,5 @@
 
-CFLAGS += -std=c99 -Wall -Wextra -Wpedantic -g
+CFLAGS += -std=c99 -Wall -Wextra -Wpedantic -Werror -g
 
 ifeq ($(DISABLE_LIBASAN),)
   CFLAGS += -fsanitize=address -fsanitize=undefined -fstack-usage -static-libasan
@@ -12,7 +12,7 @@ all: xxd test
 test: xxd
 	bash -c "diff -du <(xxd xxd.c) <(./xxd xxd.c)"
 
-xxd: main.c xxd.c
+xxd: test.c xxd.c
 	$(CC) $(CFLAGS) $^ -o $@
 
 # just use git clean tbh

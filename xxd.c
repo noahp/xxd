@@ -5,15 +5,15 @@
 #include <string.h>
 
 // print xxd yo
-void xxd(char *inbuf, size_t inlen, size_t xxd_len) {
-  for (size_t addr = 0; addr < inlen; addr += xxd_len) {
-    char *buf = inbuf + addr;
-    size_t len = (addr < inlen - xxd_len) ? (xxd_len) : (inlen - addr);
+void xxd(const void *buf, size_t len, size_t xxd_width) {
+  for (size_t addr = 0; addr < len; addr += xxd_width) {
+    char *linedata = (char*)buf + addr;
+    size_t linelen = (addr < len - xxd_width) ? (xxd_width) : (len - addr);
 
     char
-        outbuf[sizeof("00000000:") + (sizeof("xxxx ") - 1) * xxd_len + xxd_len];
+        outbuf[sizeof("00000000:") + (sizeof("xxxx ") - 1) * xxd_width + xxd_width];
     memset(outbuf, 0, sizeof(outbuf));
-    char asciibuf[xxd_len * 2 + 1];
+    char asciibuf[xxd_width * 2 + 1];
     memset(asciibuf, 0, sizeof(asciibuf));
 
     // place address
@@ -21,15 +21,15 @@ void xxd(char *inbuf, size_t inlen, size_t xxd_len) {
 
     // load hex format
     size_t i = 0;
-    for (; i < xxd_len; i++) {
+    for (; i < xxd_width; i++) {
       if ((i & 1) == 0) {
         strcat(outbuf, " ");
       }
-      if (i < len) {
+      if (i < linelen) {
         char val[3];
-        sprintf(val, "%02x", buf[i]);
+        sprintf(val, "%02x", linedata[i]);
         strcat(outbuf, val);
-        sprintf(&asciibuf[i], "%c", isprint(buf[i]) ? buf[i] : '.');
+        sprintf(&asciibuf[i], "%c", isprint(linedata[i]) ? linedata[i] : '.');
       } else {
         // space pad
         strcat(outbuf, "  ");
