@@ -7,8 +7,8 @@
 // print xxd yo
 void xxd(const void *buf, size_t len, size_t xxd_width) {
   for (size_t addr = 0; addr < len; addr += xxd_width) {
-    char *linedata = (char*)buf + addr;
-    size_t linelen = (addr < len - xxd_width) ? (xxd_width) : (len - addr);
+    uint8_t *linedata = (uint8_t*)buf + addr;
+    size_t linelen = (addr + xxd_width < len) ? (xxd_width) : (len - addr);
 
     char
         outbuf[sizeof("00000000:") + (sizeof("xxxx ") - 1) * xxd_width + xxd_width];
@@ -27,7 +27,7 @@ void xxd(const void *buf, size_t len, size_t xxd_width) {
       }
       if (i < linelen) {
         char val[3];
-        sprintf(val, "%02x", linedata[i]);
+        snprintf(val, sizeof(val), "%02" PRIx8, linedata[i]);
         strcat(outbuf, val);
         sprintf(&asciibuf[i], "%c", isprint(linedata[i]) ? linedata[i] : '.');
       } else {
