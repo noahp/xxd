@@ -4,6 +4,7 @@
 #include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "xxd.h"
 
@@ -18,6 +19,7 @@ int main(int argc, char **argv) {
 
     char *buf = malloc(100000);
     assert("whoops, can't allocate" && buf);
+    memset(buf, 0, 100000);
 
     size_t readcnt = fread(buf, 1, 100000, fp);
 

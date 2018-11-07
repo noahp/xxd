@@ -8,11 +8,14 @@ endif
 .PHONY: all
 all: xxd test
 
+# run against a few test inputs
+# using order-only to separate the test input files. since it's a .PHONY rule it
+# always runs anyway
 .PHONY: test
-test: xxd
-	bash -c "diff -du <(xxd xxd.c) <(./xxd xxd.c)"
+test: xxd | testinput/* xxd.c README.md
+	echo $| | xargs -d " " -I % bash -c "diff -du <(xxd %) <(./xxd %)"
 
-xxd: test.c xxd.c
+xxd: main.c xxd.c
 	$(CC) $(CFLAGS) $^ -o $@
 
 # just use git clean tbh
