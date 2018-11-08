@@ -7,21 +7,16 @@
 // print xxd yo
 void xxd(const void *buf, size_t len, size_t xxd_width) {
   for (size_t addr = 0; addr < len; addr += xxd_width) {
-    uint8_t *linedata = (uint8_t*)buf + addr;
-    size_t linelen = (addr + xxd_width < len) ? (xxd_width) : (len - addr);
+    uint8_t *linedata = (uint8_t *)buf + addr;
+    const size_t linelen =
+        (addr + xxd_width < len) ? (xxd_width) : (len - addr);
 
-    char
-        outbuf[sizeof("00000000:") + (sizeof("xxxx ") - 1) * xxd_width + xxd_width];
-    memset(outbuf, 0, sizeof(outbuf));
+    char outbuf[strlen("xxxx ") * xxd_width / 2 + xxd_width];
+    outbuf[0] = '\0';
     char asciibuf[xxd_width * 2 + 1];
-    memset(asciibuf, 0, sizeof(asciibuf));
-
-    // place address
-    sprintf(outbuf, "%08" PRIx32 ":", (uint32_t)addr);
 
     // load hex format
-    size_t i = 0;
-    for (; i < xxd_width; i++) {
+    for (size_t i = 0; i < xxd_width; i++) {
       if ((i & 1) == 0) {
         strcat(outbuf, " ");
       }
@@ -36,6 +31,10 @@ void xxd(const void *buf, size_t len, size_t xxd_width) {
       }
     }
 
-    printf("%s  %s\n", outbuf, asciibuf);
+    // place address
+    printf("%08" PRIx32
+           ":"
+           "%s  %s\n",
+           (uint32_t)addr, outbuf, asciibuf);
   }
 }
