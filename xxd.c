@@ -6,7 +6,7 @@
 
 // print xxd yo
 void xxd(const void *buf, size_t len, size_t xxd_width) {
-  if (!xxd_width) {
+  if (!xxd_width || xxd_width > 16) {
     xxd_width = 16;
   }
   for (size_t addr = 0; addr < len; addr += xxd_width) {
@@ -14,9 +14,9 @@ void xxd(const void *buf, size_t len, size_t xxd_width) {
     const size_t linelen =
         (addr + xxd_width < len) ? (xxd_width) : (len - addr);
 
-    char outbuf[strlen("xxxx ") * xxd_width / 2 + xxd_width];
+    char outbuf[strlen("xxxx ") * 16 / 2 + 16];
     outbuf[0] = '\0';
-    char asciibuf[xxd_width * 2 + 1];
+    char asciibuf[16 * 2 + 1];
 
     // load hex format
     for (size_t i = 0; i < xxd_width; i++) {
