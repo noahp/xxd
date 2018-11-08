@@ -6,5 +6,4 @@ services:
   - docker
 
 script:
-  - docker build -t xxd-test .
-  - docker run -e "TRAVIS_JOB_ID=$TRAVIS_JOB_ID" --security-opt seccomp:unconfined xxd-test
+  - cd $TRAVIS_BUILD_DIR && ./tests.sh

@@ -28,6 +28,7 @@ test: xxd | testinput/* xxd.c README.md
 	$(call violettext,Running tests...)
 	echo -n $| | xargs -t -d " " -I % bash -c "diff -du <(xxd %) <(./xxd %)"
 	echo -n $| | xargs -t -d " " -I % bash -c "diff -du <(xxd -c 8 %) <(./xxd % 8)"
+	echo -n $| | xargs -t -d " " -I % bash -c "diff -du <(xxd -c 0 %) <(./xxd % 0)"
 	$(call greentext,All tests passed!)
 
 xxd: main.c xxd.c
