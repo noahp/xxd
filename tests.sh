@@ -12,9 +12,18 @@ docker run xxd-test bash -c \
 # run default build command
 docker run --cap-add SYS_PTRACE xxd-test
 
-# run full build, including kcov coverage upload
-docker run --cap-add SYS_PTRACE -e "TRAVIS_JOB_ID=$TRAVIS_JOB_ID" \
+# run full build, including lcov coverage upload
+docker run -e "COVERALLS_UPLOAD=$COVERALLS_UPLOAD" \
+    -e "CODECOV_UPLOAD=$CODECOV_UPLOAD" \
+    -e "TRAVIS_JOB_ID=$TRAVIS_JOB_ID" \
     --security-opt seccomp:unconfined xxd-test bash -c \
     "cd /tmp/xxd-test && \
-     DISABLE_LIBASAN=y make xxd && \
-     kcov --coveralls-id=$TRAVIS_JOB_ID kcov-output --include-path=/tmp/xxd-test/xxd.c ./xxd xxd.c"
+     XXD_COVERAGE=1 LCOV=lcov make && \
+     if [[ -n \$COVERALLS_UPLOAD ]]; \
+     then \
+     (coveralls -n -i ./ -e example.c -l coverage_filtered.info); \
+     fi && \
+     if [[ -n \$CODECOV_UPLOAD ]]; \
+     then \
+     (curl -s https://codecov.io/bash | bash -s - -X gcov -d -f coverage_filtered.info); \
+     fi"
