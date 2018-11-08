@@ -1,9 +1,10 @@
 FROM ubuntu:cosmic
 
-RUN apt-get update
-RUN apt-get install -y \
+RUN apt-get update && apt-get install -y \
   binutils-dev \
   build-essential \
+  clang-7 \
+  clang-tools-7 \
   cmake \
   curl \
   g++ \
@@ -30,9 +31,4 @@ RUN bash -c "cd /tmp && \
 
 COPY . /tmp/xxd-test
 
-CMD bash -c \
-  "cd /tmp/xxd-test && \
-  make -j6 && \
-  make clean && \
-  DISABLE_LIBASAN=y make xxd -j6 && \
-  kcov --coveralls-id=$TRAVIS_JOB_ID kcov-output --include-path=/tmp/xxd-test/xxd.c ./xxd xxd.c"
+CMD bash -c "cd /tmp/xxd-test && make -j6"
