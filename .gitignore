@@ -2,4 +2,7 @@
 *.o
 *.out
 xxd
-kcov-output/
+coverage/
+*.info
+*.gcda
+*.gcno
