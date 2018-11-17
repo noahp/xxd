@@ -8,7 +8,6 @@ RUN apt-get update && apt-get install -y \
   gcc \
   git \
   lcov \
-  pkg-config \
   python \
   python-pip \
   xxd
