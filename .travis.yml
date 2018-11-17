@@ -6,4 +6,4 @@ services:
   - docker
 
 script:
-  - cd $TRAVIS_BUILD_DIR && COVERALLS_UPLOAD=1 ./tests.sh
+  - cd $TRAVIS_BUILD_DIR && CODECOV_UPLOAD=1 ./tests.sh

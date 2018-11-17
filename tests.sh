@@ -13,9 +13,22 @@ docker run xxd-test bash -c \
 docker run --cap-add SYS_PTRACE xxd-test
 
 # run full build, including lcov coverage upload
-docker run -e "COVERALLS_UPLOAD=$COVERALLS_UPLOAD" \
-    -e "CODECOV_UPLOAD=$CODECOV_UPLOAD" \
-    -e "TRAVIS_JOB_ID=$TRAVIS_JOB_ID" \
+# need to propagate a lot of travis env variables through...
+# --env-file is another option
+docker run \
+    -e COVERALLS_UPLOAD \
+    -e CODECOV_UPLOAD \
+    -e CI \
+    -e TRAVIS \
+    -e TRAVIS_PULL_REQUEST_SHA \
+    -e TRAVIS_COMMIT \
+    -e TRAVIS_JOB_NUMBER \
+    -e TRAVIS_PULL_REQUEST \
+    -e TRAVIS_JOB_ID \
+    -e TRAVIS_REPO_SLUG \
+    -e TRAVIS_OS_NAME \
+    -e TRAVIS_TAG \
+    -e TRAVIS_BRANCH \
     --security-opt seccomp:unconfined xxd-test bash -c \
     "cd /tmp/xxd-test && \
      XXD_COVERAGE=1 LCOV=lcov make && \
@@ -25,5 +38,5 @@ docker run -e "COVERALLS_UPLOAD=$COVERALLS_UPLOAD" \
      fi && \
      if [[ -n \$CODECOV_UPLOAD ]]; \
      then \
-     (curl -s https://codecov.io/bash | bash -s - -X gcov -d -f coverage_filtered.info); \
+     (curl -s https://codecov.io/bash | bash -s - -X gcov -f coverage_filtered.info); \
      fi"
