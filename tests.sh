@@ -7,7 +7,7 @@ docker build -t xxd-test .
 # run scan-build
 docker run xxd-test bash -c \
     "cd /tmp/xxd-test && \
-     DISABLE_LIBASAN=y CC=clang-7 scan-build-7 --status-bugs make"
+     DISABLE_LIBASAN=y CC=clang scan-build --status-bugs make"
 
 # run default build command
 docker run --cap-add SYS_PTRACE xxd-test
