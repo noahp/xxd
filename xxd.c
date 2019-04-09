@@ -20,7 +20,7 @@ void xxd(const void *buf, size_t len, size_t xxd_width) {
 
     // load hex format
     for (size_t i = 0; i < xxd_width; i++) {
-      if ((i & 1) == 0) {
+      if ((i & 1u) == 0) {
         strcat(outbuf, " ");
       }
       if (i < linelen) {
@@ -28,16 +28,14 @@ void xxd(const void *buf, size_t len, size_t xxd_width) {
         snprintf(val, sizeof(val), "%02" PRIx8, linedata[i]);
         strcat(outbuf, val);
         sprintf(&asciibuf[i], "%c", isprint(linedata[i]) ? linedata[i] : '.');
-      } else {
-        // space pad
-        strcat(outbuf, "  ");
       }
     }
 
     // place address
     printf("%08" PRIx32
            ":"
-           "%s  %s\n",
-           (uint32_t)addr, outbuf, asciibuf);
+           "%-*s  %s\n",
+           (uint32_t)addr, (int)(xxd_width * 2 + xxd_width / 2), outbuf,
+           asciibuf);
   }
 }

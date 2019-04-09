@@ -2,15 +2,21 @@
 [![codecov](https://codecov.io/gh/noahp/xxd/branch/master/graph/badge.svg)](https://codecov.io/gh/noahp/xxd)
 
 # 👻 xxd
+
 Stunt / code golf, got out of hand.
 
-# usage
+## usage
+
 Copy `xxd.c` + `xxd.h` into your project, or copy the contents of `xxd.c`.
 
-# build standalone
+## build standalone
+
 Use docker..
-## docker quickstart
+
+### docker quickstart
+
 On ubuntu as easy as:
+
 ```bash
 # install docker
 sudo apt install docker.io
@@ -20,23 +26,23 @@ newgrp docker
 # log out and back in so usermod takes effect
 ```
 
-## run
+### run
+
 You can run exactly what CI does by doing:
+
 ```bash
 ./tests.sh
 ```
 
-## run more
+That will build the docker image, and run the tests.
+
+### run more
+
 If you want to run the steps manually-
+
 ```bash
 docker build -t xxd-test .
 
-# on build, the image copies the current working dir into /tmp/xxd-test for CI
-# to use, so note that your changes won't be propogated without rebuilding.
 # --cap-add SYS_PTRACE is for address sanitizer
 docker run --cap-add SYS_PTRACE xxd-test
-
-# you can optionally just bind mount the current dir if you're making mods:
-docker run --cap-add SYS_PTRACE -v "$(pwd):/tmp/xxd-test" xxd-test
-# that will write build output into the cwd though so be aware.
 ```
