@@ -16,6 +16,7 @@ RUN apt-get update && apt-get install -y \
   pkg-config \
   python \
   python-pip \
+  valgrind \
   xxd
 
 RUN pip install cpp-coveralls

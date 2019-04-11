@@ -26,6 +26,7 @@ int main(int argc, char **argv) {
     xxd(buf, readcnt, xxd_len);
 
     free(buf);
+    fclose(fp);
   }
   return 0;
 }

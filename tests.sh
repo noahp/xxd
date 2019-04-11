@@ -24,6 +24,13 @@ docker run -v"$(pwd):/mnt/workspace" xxd-test bash -c \
     "cp -r /mnt/workspace /tmp/xxd-test && cd /tmp/xxd-test && \
      clang-tidy-7 -checks='*' \$(find . -name '*.c' -type f)"
 
+# run valgrind
+docker run -v"$(pwd):/mnt/workspace" xxd-test bash -c \
+    "cp -r /mnt/workspace /tmp/xxd-test && cd /tmp/xxd-test && \
+     DISABLE_LIBASAN=1 make && \
+     valgrind --leak-check=full --show-leak-kinds=all \
+        --errors-for-leak-kinds=all --error-exitcode=1 ./xxd main.c"
+
 # run full build, including lcov coverage upload
 # need to propagate a lot of travis env variables through...
 # --env-file is another option
