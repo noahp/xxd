@@ -1,0 +1,3 @@
+[submodule "fastcov"]
+	path = fastcov
+	url = https://github.com/RPGillespie6/fastcov.git

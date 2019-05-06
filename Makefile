@@ -39,10 +39,9 @@ test: xxd | testinput/* xxd.c README.md
 	$(call greentext,All tests passed!)
 ifeq ($(XXD_COVERAGE),1)
 ifdef LCOV
-	@echo "+++ Running lcov..."
-	$(LCOV) --quiet --rc lcov_branch_coverage=1 --capture --directory ./ --output-file coverage.info
-	$(LCOV) --quiet --rc lcov_branch_coverage=1 --remove coverage.info "*main.c" -o coverage_filtered.info
-	genhtml --branch-coverage coverage_filtered.info --output-directory coverage
+	@echo "+++ Running fastcov..."
+	@"./fastcov/fastcov.py" --gcov gcov-9 --exclude /usr/include --branch-coverage --lcov -o coverage.info
+	@genhtml --branch-coverage coverage.info --output-directory coverage
 	@echo "See file://$(abspath coverage)/index.html for lcov results"
 endif
 endif

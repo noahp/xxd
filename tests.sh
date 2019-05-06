@@ -7,7 +7,7 @@ docker build -t xxd-test .
 # run scan-build
 docker run -v"$(pwd):/mnt/workspace" xxd-test bash -c \
     "cp -r /mnt/workspace /tmp/xxd-test && cd /tmp/xxd-test && \
-     DISABLE_LIBASAN=y CC=clang-7 scan-build-7 --status-bugs make"
+     DISABLE_LIBASAN=y CC=clang-8 scan-build-8 --status-bugs make"
 
 # run default build command
 docker run -v"$(pwd):/mnt/workspace" --cap-add SYS_PTRACE xxd-test bash -c \
@@ -22,7 +22,7 @@ docker run -v"$(pwd):/mnt/workspace" xxd-test bash -c \
 # run clang-tidy
 docker run -v"$(pwd):/mnt/workspace" xxd-test bash -c \
     "cp -r /mnt/workspace /tmp/xxd-test && cd /tmp/xxd-test && \
-     clang-tidy-7 -checks='*' \$(find . -name '*.c' -type f)"
+     clang-tidy-8 -checks='*' \$(find . -name '*.c' -type f)"
 
 # run valgrind
 docker run -v"$(pwd):/mnt/workspace" xxd-test bash -c \
@@ -54,9 +54,9 @@ docker run \
      XXD_COVERAGE=1 LCOV=lcov make && \
      if [[ -n \$COVERALLS_UPLOAD ]]; \
      then \
-     (coveralls -n -i ./ -e example.c -l coverage_filtered.info); \
+     (coveralls -n -i ./ -e example.c -l coverage.info); \
      fi && \
      if [[ -n \$CODECOV_UPLOAD ]]; \
      then \
-     (curl -s https://codecov.io/bash | bash -s - -X gcov -f coverage_filtered.info); \
+     (curl -s https://codecov.io/bash | bash -s - -X gcov -f coverage.info); \
      fi"
