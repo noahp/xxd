@@ -48,7 +48,7 @@ docker run \
     -e TRAVIS_OS_NAME \
     -e TRAVIS_TAG \
     -e TRAVIS_BRANCH \
-    --security-opt seccomp:unconfined \
+    --cap-add SYS_PTRACE \
     -v"$(pwd):/mnt/workspace" xxd-test bash -c \
     "cp -r /mnt/workspace /tmp/xxd-test && cd /tmp/xxd-test && \
      XXD_COVERAGE=1 LCOV=lcov make && \
