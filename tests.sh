@@ -51,7 +51,7 @@ docker run \
     --cap-add SYS_PTRACE \
     -v"$(pwd):/mnt/workspace" xxd-test bash -c \
     "cp -r /mnt/workspace /tmp/xxd-test && cd /tmp/xxd-test && \
-     XXD_COVERAGE=1 LCOV=lcov make && \
+     XXD_COVERAGE=1 FASTCOV=1 make && \
      if [[ -n \$COVERALLS_UPLOAD ]]; \
      then \
      (coveralls -n -i ./ -e example.c -l coverage.info); \

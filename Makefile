@@ -9,8 +9,6 @@ endif
 ifeq ($(XXD_COVERAGE),1)
 CFLAGS += --coverage
 
-# Set LCOV if available
-LCOV ?=
 endif
 
 # colored output ^_^ https://gist.github.com/chrisopedia/8754917
@@ -38,7 +36,7 @@ test: xxd | testinput/* xxd.c README.md
 	echo -n $| | xargs -t -d " " -I % bash -c "diff -du <(xxd -c 0 %) <(./xxd % 0)"
 	$(call greentext,All tests passed!)
 ifeq ($(XXD_COVERAGE),1)
-ifdef LCOV
+ifneq ($(FASTCOV),)
 	@echo "+++ Running fastcov..."
 	@"./fastcov/fastcov.py" --gcov gcov-9 --exclude /usr/include --branch-coverage --lcov -o coverage.info
 	@genhtml --branch-coverage coverage.info --output-directory coverage
