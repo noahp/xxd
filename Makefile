@@ -1,5 +1,5 @@
 
-CFLAGS += -std=c99 -Wall -Wextra -Wpedantic -Werror -g
+CFLAGS += -std=c99 -O2 -Wall -Wextra -Wpedantic -Werror -g
 
 # right now ASAN is only supported on gcc
 ifeq ($(DISABLE_LIBASAN),)
@@ -33,12 +33,11 @@ test: xxd | testinput/* xxd.c README.md
 	$(call violettext,Running tests...)
 	echo -n $| | xargs -t -d " " -I % bash -c "diff -du <(xxd %) <(./xxd %)"
 	echo -n $| | xargs -t -d " " -I % bash -c "diff -du <(xxd -c 8 %) <(./xxd % 8)"
-	echo -n $| | xargs -t -d " " -I % bash -c "diff -du <(xxd -c 0 %) <(./xxd % 0)"
 	$(call greentext,All tests passed!)
 ifeq ($(XXD_COVERAGE),1)
 ifneq ($(FASTCOV),)
 	@echo "+++ Running fastcov..."
-	@"./fastcov/fastcov.py" --gcov gcov-9 --exclude /usr/include --branch-coverage --lcov -o coverage.info
+	@"./fastcov/fastcov.py" --gcov gcov-9 --include xxd.c --branch-coverage --lcov -o coverage.info
 	@genhtml --branch-coverage coverage.info --output-directory coverage
 	@echo "See file://$(abspath coverage)/index.html for lcov results"
 endif

@@ -6,9 +6,6 @@
 
 // print xxd yo
 void xxd(const void *buf, size_t len, size_t xxd_width) {
-  if (!xxd_width || xxd_width > 16) {
-    xxd_width = 16;
-  }
   for (size_t addr = 0; addr < len; addr += xxd_width) {
     uint8_t *linedata = (uint8_t *)buf + addr;
     const size_t linelen =
