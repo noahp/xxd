@@ -1,3 +1,5 @@
+#include "xxd.h"
+
 #include <ctype.h>
 #include <inttypes.h>
 #include <stdint.h>
@@ -7,7 +9,7 @@
 // print xxd yo
 void xxd(const void *buf, size_t len, size_t xxd_width) {
   for (size_t addr = 0; addr < len; addr += xxd_width) {
-    uint8_t *linedata = (uint8_t *)buf + addr;
+    const uint8_t *linedata = (const uint8_t *)buf + addr;
     const size_t linelen =
         (addr + xxd_width < len) ? (xxd_width) : (len - addr);
 

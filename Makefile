@@ -1,6 +1,12 @@
 
 CFLAGS += -std=c99 -O2 -Wall -Wextra -Wpedantic -Werror -g
 
+# Enable -Weverything for clang ^_^
+ifneq (,$(filter clang,$(CC)))
+CFLAGS += -Weverything
+endif
+
+
 # right now ASAN is only supported on gcc
 ifeq ($(DISABLE_LIBASAN),)
   CFLAGS += -fsanitize=address -fsanitize=undefined -fstack-usage -static-libasan
